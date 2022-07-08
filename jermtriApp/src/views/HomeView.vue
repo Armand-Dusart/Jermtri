@@ -1,30 +1,38 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
-    <v-btn elevation="2" @click="testApi">TestApi</v-btn>
+    <v-btn v-if="!loading" elevation="2" @click="testApi">TestApi</v-btn>
+    <v-progress-circular
+      v-else
+      indeterminate
+      color="green"
+    ></v-progress-circular>
+    <div v-if="data">
+      {{ data }}
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+// import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 import Controller from "../controller/controller";
 
-@Component({
-  components: {
-    HelloWorld,
-  },
-})
+@Component
 export default class HomeView extends Vue {
   controller: Controller = new Controller();
-
+  loading: boolean = false;
+  data: any = null;
   async testApi() {
-    const test = await this.controller.get("/");
+    this.loading = true;
+    const restoData = await this.controller.get("/restaurants/18");
     console.log(
       "🚀 ~ file: HomeView.vue ~ line 23 ~ HomeView ~ testApi ~ test",
-      test
+      restoData
     );
+    if (!!restoData) {
+      this.data = restoData;
+    }
+    this.loading = false;
   }
 }
 </script>

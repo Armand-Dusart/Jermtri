@@ -1,10 +1,8 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <div style="display: flex; justify-content: center; margin-top: 50px">
+      <router-view />
+    </div>
   </div>
 </template>
 
